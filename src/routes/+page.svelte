@@ -1,22 +1,28 @@
 <script>
 	let todos = [];
 	let todoInput = '';
-
+	let interaction = 0;
 	let count = 0;
 	function addTodo() {
-		count++;
+		if (todoInput === '') return;
 		todos = [...todos, todoInput];
 		todoInput = '';
 	}
 </script>
 
 <main>
-	<h1>To Do App Svelte</h1>
-	<input bind:value={todoInput} type="text" placeholder="Add a new todo" />
-	<button on:click={() => addTodo()}>Clicked {count}</button>
+	<div class="input">
+		<form on:submit={() => addTodo()}>
+			<input bind:value={todoInput} type="text" placeholder="Add a new todo" />
+			<button type="submit">Add Todo</button>
+		</form>
+	</div>
 	<div>
 		{#each todos as todo}
-			<p>{todo}</p>
+			<div>
+				{todo}
+				<button on:click={() => (todos = todos.filter((o) => o !== todo))}>Delete</button>
+			</div>
 		{/each}
 	</div>
 </main>
@@ -27,6 +33,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		max-width: 1400px;
+		margin: 0 auto;
 	}
 	h1 {
 		text-align: center;
@@ -35,18 +43,28 @@
 		margin: 0;
 		padding: 0;
 	}
+	input {
+		width: 100%;
+
+		padding: 10px;
+		border-radius: 5px;
+		border: 1px solid #00000023;
+	}
 	button {
-		background-color: #000000;
-		color: #ffffff;
-		border: none;
-		padding: 1rem;
-		font-size: 1.5rem;
-		border-radius: 0.5rem;
+		width: 100%;
 	}
 	button:hover {
 		transform: scale(0.95);
 	}
 	button:active {
 		transform: scale(0.9);
+	}
+
+	.input {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
